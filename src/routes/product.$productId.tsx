@@ -19,7 +19,7 @@ import { localCartAtom } from "@/libs/jotai";
 import { productQueryOptions } from "@/libs/queryOptions";
 import { cn } from "@/libs/utils";
 
-export const Route = new FileRoute("/product/$productId").createRoute({
+export const Route = new FileRoute('/product/$productId').createRoute({
   parseParams: (params) => ({
     productId: z.number().int().parse(Number(params.productId)),
   }),

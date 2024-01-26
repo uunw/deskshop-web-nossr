@@ -3,15 +3,14 @@ import { useMutation } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { useAtom } from "jotai";
 import logLevel from "loglevel";
 import { useCallback, useEffect, useState } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { z } from "zod";
 
-import MySwal from "@/components/myswal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -23,8 +22,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
-import { userSessionAtom } from "@/libs/jotai";
+import { useAuth } from "@/contexts/auth/useAuth";
 import { apiUrl } from "@/libs/utils";
 
 const loginSchema = z.object({
@@ -48,8 +46,8 @@ type LoginType = z.infer<typeof loginSchema>;
 export const component = function AuthLoginComponent() {
   const [isFormLoading, setIsFormLoading] = useState<boolean>(false);
   const { executeRecaptcha } = useGoogleReCaptcha();
-  const { toast } = useToast();
-  const [userSession, setUserSession] = useAtom(userSessionAtom);
+  // const [userSession, setUserSession] = useAtom(userSessionAtom);
+  const { setUser, user } = useAuth();
   // const { userId } = useAuth();
   const navigate = useNavigate();
 
@@ -123,11 +121,11 @@ export const component = function AuthLoginComponent() {
         //   `https://en.gravatar.com/${emailMD5Digest}.json`
         // );
 
-        setUserSession({
+        setUser({
           ...res,
         });
 
-        logLevel.debug(userSession);
+        logLevel.debug(user);
         // const signInResource = await signIn.create({
         //   strategy: "password",
         //   identifier: data.identifier,
@@ -148,12 +146,10 @@ export const component = function AuthLoginComponent() {
 
         form.reset();
 
-        toast({
-          title: t("signInSuccess"),
-        });
+        toast(t("signInSuccess"));
 
-        if (!userSession) return;
-        navigate({ to: userSession.status === "EMPLOYEE" ? "/manage" : "/" });
+        // if (!userSession) return;
+        navigate({ to: res.status === "EMPLOYEE" ? "/manage" : "/" });
       } catch (err) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const error = err as any;
@@ -165,27 +161,21 @@ export const component = function AuthLoginComponent() {
               message: t("credentialNotValid", "Credential not valid."),
             });
 
-            toast({
-              title: t("credentialNotValid", "Credential not valid."),
-              variant: "destructive",
-            });
+            // toast(t("credentialNotValid", "Credential not valid."));
 
             break;
 
-          case "CAPTCHA_NOT_VALID":
-            MySwal.fire({
-              icon: "error",
-              title: "เกิดข้อผิดพลาด",
-              text: "Captcha ไม่ถูกต้อง",
-            });
+          // case "CAPTCHA_NOT_VALID":
+          //   MySwal.fire({
+          //     icon: "error",
+          //     title: "เกิดข้อผิดพลาด",
+          //     text: "Captcha ไม่ถูกต้อง",
+          //   });
 
-            break;
+          //   break;
 
           default:
-            toast({
-              title: "เกิดข้อผิดพลาดบางอย่าง",
-              variant: "destructive",
-            });
+            toast("เกิดข้อผิดพลาดบางอย่าง");
 
             break;
         }
@@ -193,7 +183,7 @@ export const component = function AuthLoginComponent() {
 
       setIsFormLoading(false);
     },
-    [form, navigate, setUserSession, signInMutation, t, toast, userSession]
+    [form, navigate, setUser, signInMutation, t, user]
   );
 
   return (
@@ -244,7 +234,7 @@ export const component = function AuthLoginComponent() {
                       <FormControl>
                         <Input type="password" {...field} />
                       </FormControl>
-                      <FormMessage />
+                      {/* <FormMessage /> */}
                     </FormItem>
                   )}
                 />

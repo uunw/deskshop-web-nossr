@@ -15,8 +15,8 @@ import {
 } from "@tanstack/react-table";
 import currency from "currency.js";
 import logLevel from "loglevel";
-import { useCallback, useMemo, useState } from "react";
-import { TbColumns2, TbPrinter, TbRefresh } from "react-icons/tb";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { TbColumns2, TbFilter, TbPrinter, TbRefresh } from "react-icons/tb";
 import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
@@ -32,6 +32,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -53,13 +66,14 @@ import {
 import { cn } from "@/libs/utils";
 import { BookDeskType } from "@/types/product.type";
 
-export const Route = new FileRoute("/manage/product/view_desk/").createRoute({
+export const Route = new FileRoute('/manage/product/view_desk/').createRoute({
   component: ManageProductViewDeskComponent,
 });
 
 function ManageProductViewDeskComponent() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [globalFilter, setGlobalFilter] = useState("");
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [isRefetching, setIsRefetching] = useState(false);
@@ -334,19 +348,118 @@ function ManageProductViewDeskComponent() {
     window.print();
   }, []);
 
+  useEffect(() => {
+    table.setGlobalFilter(globalFilter);
+  }, [globalFilter, table]);
+
   return (
     <div className="w-full">
       <h1>{"ข้อมูลการจองสินค้า"}</h1>
 
       <div className="flex items-center py-4 justify-between">
-        <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
+        <div className="flex space-x-2">
+          <Input
+            placeholder="Filter value..."
+            // value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+            value={globalFilter}
+            onChange={(evt) => {
+              const value = evt.currentTarget.value;
+              setGlobalFilter(value);
+              // table.getColumn("email")?.setFilterValue(event.target.value);
+              // table.setGlobalFilter('')
+              // const columeStatus = table.getColumn("status");
+              // if(!columeStatus) return;
+              // columeStatus.setFilterValue('PENDING')
+            }}
+            className="w-full"
+          />
+
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className="ml-auto"
+                // onClick={handlePrintOrder}
+              >
+                <TbFilter className={cn("h-4 w-auto")} />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80" side="bottom">
+              <div className="grid gap-4">
+                <div className="space-y-2">
+                  <h4 className="font-medium leading-none">{"กรองข้อมูล"}</h4>
+                  {/* <p className="text-sm text-muted-foreground">
+                    Set the dimensions for the layer.
+                  </p> */}
+                </div>
+                <div className="grid gap-2">
+                  <div className="grid grid-cols-3 items-center gap-4">
+                    <Label htmlFor="width">{"ชื่อสินค้า"}</Label>
+                    <Input
+                      id="width"
+                      className="col-span-2 h-8"
+                      value={
+                        (table
+                          .getColumn("add_desk")
+                          ?.getFilterValue() as string) ?? ""
+                      }
+                      onChange={(evt) => {
+                        table
+                          .getColumn("add_desk")
+                          ?.setFilterValue(evt.currentTarget.value);
+                      }}
+                    />
+                  </div>
+                  <div className="grid grid-cols-3 items-center gap-4">
+                    <Label htmlFor="maxWidth">{"ชื่อลูกค้า"}</Label>
+                    <Input
+                      id="maxWidth"
+                      className="col-span-2 h-8"
+                      value={
+                        (table.getColumn("name")?.getFilterValue() as string) ??
+                        ""
+                      }
+                      onChange={(evt) => {
+                        table
+                          .getColumn("name")
+                          ?.setFilterValue(evt.currentTarget.value);
+                      }}
+                    />
+                  </div>
+                  <div className="grid grid-cols-3 items-center gap-4">
+                    <Label htmlFor="height">{"สถานะ"}</Label>
+                    <Select
+                      onValueChange={(v) =>
+                        table.getColumn("book_status")?.setFilterValue(v)
+                      }
+                      value={
+                        (table
+                          .getColumn("book_status")
+                          ?.getFilterValue() as string) ?? ""
+                      }
+                    >
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="PENDING">{"รออนุมัติ"}</SelectItem>
+                        <SelectItem value="SUCCESS">{"อนุมัติ"}</SelectItem>
+                        <SelectItem value="CANCEL">{"ยกเลิก"}</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <Button
+                  onClick={() => {
+                    table.resetColumnFilters();
+                  }}
+                >
+                  {"ล้างข้อมูล"}
+                </Button>
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
 
         <div className="space-x-2">
           <Tooltip>

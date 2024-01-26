@@ -70,9 +70,7 @@ import {
 } from "@/libs/queryOptions";
 import { ProductType } from "@/types/product.type";
 
-export const Route = new FileRoute(
-  "/manage/product/scheduling_desk"
-).createRoute({
+export const Route = new FileRoute('/manage/product/scheduling_desk').createRoute({
   component: ManageProductSchedulingDeskComponent,
 });
 

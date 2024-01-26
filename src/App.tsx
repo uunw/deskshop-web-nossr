@@ -10,11 +10,14 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { queryClient } from "@/libs/react-query";
 import { routeTree } from "@/routeTree.gen";
 
+import { useAuth } from "./contexts/auth/useAuth";
+
 const router = new Router({
   routeTree,
   context: {
     queryClient,
-    userSession: null
+    userSession: null,
+    auth: undefined!,
   },
   defaultPreload: "intent",
   defaultStaleTime: 0,
@@ -27,14 +30,23 @@ declare module "@tanstack/react-router" {
 }
 
 function App() {
+  const auth = useAuth();
+  const basePath = import.meta.env.PROD
+    ? "/student/student65/u65301280011/IKEA-DeskShop/"
+    : undefined;
+
   return (
     <>
       <QueryClientProvider client={queryClient}>
         <GoogleReCaptchaProvider reCaptchaKey="6LeUHfwjAAAAAOi3d2SbJhKXxFJ4EZAdHnRDb81t">
           <ThemeProvider defaultTheme="system" storageKey="ui-theme">
             <TooltipProvider delayDuration={400}>
-              <RouterProvider router={router} context={{}} />
-              
+              <RouterProvider
+                router={router}
+                context={{ queryClient, auth }}
+                basepath={basePath}
+              />
+
               <ReactQueryDevtools initialIsOpen={false} />
             </TooltipProvider>
           </ThemeProvider>

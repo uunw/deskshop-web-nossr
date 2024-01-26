@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
+import { apiUrl } from "@/libs/utils";
 
 const signUpSchema = z
   .object({
@@ -111,10 +112,7 @@ export const component = function AuthRegisterComponent() {
       formData.set("password", data.password);
       formData.set("captcha_token", data.captcha);
 
-      const res = await axios.post(
-        "https://waraporn.cmtc.ac.th/student/student65/u65301280011/IKEA-DeskShop/api/register.php",
-        formData
-      );
+      const res = await axios.post(apiUrl + "register.php", formData);
 
       return res.data;
     },

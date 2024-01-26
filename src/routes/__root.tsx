@@ -11,16 +11,16 @@ import NProgress from "@/components/nprogress";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Toaster } from "@/components/ui/sonner";
+import { IAuthContext } from "@/contexts/auth";
 import { UserSession } from "@/types/session.type";
 
 export const Route = rootRouteWithContext<{
   queryClient: QueryClient;
-  userSession: null | UserSession
-}>()({
-  
-}).update({
+  userSession: null | UserSession;
+  auth: IAuthContext;
+}>()({}).update({
   component: RootComponent,
-})
+});
 
 function RootComponent() {
   return (
@@ -41,7 +41,7 @@ function RootComponent() {
       <SiteFooter />
       <Toaster />
 
-      <TanStackRouterDevtools position="bottom-left" />
+      <TanStackRouterDevtools position="bottom-left" initialIsOpen={false} />
     </>
   );
 }

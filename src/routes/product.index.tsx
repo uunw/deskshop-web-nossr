@@ -6,7 +6,7 @@ import { z } from "zod";
 
 import { productsQueryOptions } from "@/libs/queryOptions";
 
-export const Route = new FileRoute("/product/")
+export const Route = new FileRoute('/product/')
   .createRoute({
     validateSearch: z.object({
       searchQuery: z.string().optional(),

@@ -3,6 +3,7 @@ import { useAtom } from "jotai";
 import logLevel from "loglevel";
 import { FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 
 import { userSessionAtom } from "@/libs/jotai";
 
@@ -23,14 +24,10 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { useToast } from "./ui/use-toast";
 
 const UserMenu: FC = () => {
   const { theme, setTheme } = useTheme();
-  // const { signOut } = useClerk();
-  // const { user } = useUser();
   const { t } = useTranslation();
-  const { toast } = useToast();
   const [userSession, setUserSession] = useAtom(userSessionAtom);
   const navigate = useNavigate();
 
@@ -40,16 +37,13 @@ const UserMenu: FC = () => {
 
     logLevel.debug("sign out");
 
-    // await signOut();
     setUserSession(null);
 
-    toast({
-      title: "ออกจากระบบเสร็จสิ้น",
-    });
+    toast(t("signOutSuccess"));
 
     // navigate("/auth/login");
     navigate({ to: "/auth/login" });
-  }, [navigate, setUserSession, toast]);
+  }, [navigate, setUserSession, t]);
 
   if (!userSession) return null;
 

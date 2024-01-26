@@ -76,6 +76,6 @@ function UserOrderComponent() {
   );
 }
 
-export const Route = new FileRoute("/user/order").createRoute().update({
+export const Route = new FileRoute('/user/order').createRoute().update({
   component: UserOrderComponent,
 });
