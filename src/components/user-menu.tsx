@@ -61,7 +61,7 @@ const UserMenu: FC = () => {
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
-          <DropdownMenuLabel>{`สวัสดี ${userSession.name}`}</DropdownMenuLabel>
+          <DropdownMenuLabel>{`สวัสดี ${userSession.name}`}{userSession.status === 'EMPLOYEE' ? ' (ผู้ดูแลระบบ)' : ''}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem asChild>

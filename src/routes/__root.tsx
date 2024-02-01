@@ -31,7 +31,7 @@ function RootComponent() {
 
       {/* <ScrollRestoration /> */}
 
-      <div className="sm:px-10 py-12">
+      <div className="sm:px-10 py-5">
         <Suspense fallback={<p>loading page...</p>}>
           <ScrollRestoration />
           <Outlet />

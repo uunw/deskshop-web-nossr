@@ -1,3 +1,4 @@
+import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 
 const stickers = [
@@ -35,11 +36,11 @@ const stickers = [
   },
 ];
 
-// export const Route = new FileRoute('/reward').createRoute({
-//   component: RewardComponent,
-// });
+export const Route = createFileRoute('/reward')({
+  component: RewardComponent,
+});
 
-export const component = function RewardComponent() {
+function RewardComponent() {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -99,4 +100,4 @@ export const component = function RewardComponent() {
       </div>
     </motion.div>
   );
-};
+}

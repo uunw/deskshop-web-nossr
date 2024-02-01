@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import currency from "currency.js";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useState } from "react";
@@ -22,7 +22,8 @@ import {
   useUserCheckoutMutation,
 } from "@/libs/queryOptions";
 
-export const component = function UserCartComponent() {
+
+function UserCartComponent() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [localCart, setLocalCart] = useAtom(localCartAtom);
@@ -270,8 +271,8 @@ export const component = function UserCartComponent() {
       </div>
     </>
   );
-};
+}
 
-// export const Route = new FileRoute('/cart').createRoute().update({
-//   component: UserCartComponent,
-// });
+export const Route = createFileRoute('/cart')({
+  component: UserCartComponent
+})

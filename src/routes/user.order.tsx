@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { FileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import currency from "currency.js";
 import dayjs from "dayjs";
 import { useAtom } from "jotai";
@@ -17,6 +17,10 @@ import {
 } from "@/components/ui/table";
 import { userSessionAtom } from "@/libs/jotai";
 import { userOrderesQueryOptions } from "@/libs/queryOptions";
+
+export const Route = createFileRoute('/user/order')({
+  component: UserOrderComponent
+})
 
 function UserOrderComponent() {
   const { t } = useTranslation();
@@ -75,7 +79,3 @@ function UserOrderComponent() {
     </>
   );
 }
-
-export const Route = new FileRoute('/user/order').createRoute().update({
-  component: UserOrderComponent,
-});

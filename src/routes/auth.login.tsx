@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import axios from "axios";
 import { motion } from "framer-motion";
 import logLevel from "loglevel";
@@ -43,7 +43,11 @@ type LoginType = z.infer<typeof loginSchema>;
 //     component: AuthLoginComponent,
 //   });
 
-export const component = function AuthLoginComponent() {
+export const Route = createFileRoute('/auth/login')({
+  component: AuthLoginComponent
+})
+
+function AuthLoginComponent() {
   const [isFormLoading, setIsFormLoading] = useState<boolean>(false);
   const { executeRecaptcha } = useGoogleReCaptcha();
   // const [userSession, setUserSession] = useAtom(userSessionAtom);
@@ -255,7 +259,7 @@ export const component = function AuthLoginComponent() {
               <Link
                 to="/auth/register"
                 className="font-semibold leading-6 text-primary"
-                // preventScrollReset={false}
+              // preventScrollReset={false}
               >
                 {"สมัครสมาชิก"}
               </Link>
@@ -265,4 +269,4 @@ export const component = function AuthLoginComponent() {
       </div>
     </motion.div>
   );
-};
+}

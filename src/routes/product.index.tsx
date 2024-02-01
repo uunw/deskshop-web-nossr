@@ -1,23 +1,20 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { FileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import currency from "currency.js";
 import { motion } from "framer-motion";
 import { z } from "zod";
 
 import { productsQueryOptions } from "@/libs/queryOptions";
 
-export const Route = new FileRoute('/product/')
-  .createRoute({
-    validateSearch: z.object({
-      searchQuery: z.string().optional(),
-    }),
+export const Route = createFileRoute("/product/")({
+  validateSearch: z.object({
+    searchQuery: z.string().optional(),
+  }),
 
-    loader: (opts) =>
-      opts.context.queryClient.ensureQueryData(productsQueryOptions()),
-  })
-  .update({
-    component: ProductComponent,
-  });
+  loader: (opts) =>
+    opts.context.queryClient.ensureQueryData(productsQueryOptions()),
+  component: ProductComponent,
+});
 
 function ProductComponent() {
   const search = Route.useSearch();

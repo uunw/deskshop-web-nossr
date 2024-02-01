@@ -1,6 +1,6 @@
 import { CaretSortIcon, DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { FileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -66,7 +66,7 @@ import {
 import { cn } from "@/libs/utils";
 import { BookDeskType } from "@/types/product.type";
 
-export const Route = new FileRoute('/manage/product/view_desk/').createRoute({
+export const Route = createFileRoute('/manage/product/view_desk/')({
   component: ManageProductViewDeskComponent,
 });
 

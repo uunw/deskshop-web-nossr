@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { FileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import currency from "currency.js";
 import { motion } from "framer-motion";
 import { useAtom } from "jotai";
@@ -19,18 +19,11 @@ import { localCartAtom } from "@/libs/jotai";
 import { productQueryOptions } from "@/libs/queryOptions";
 import { cn } from "@/libs/utils";
 
-export const Route = new FileRoute('/product/$productId').createRoute({
+export const Route = createFileRoute('/product/$productId')({
   parseParams: (params) => ({
     productId: z.number().int().parse(Number(params.productId)),
   }),
   stringifyParams: ({ productId }) => ({ productId: `${productId}` }),
-  // validateSearch: (search) =>
-  //   z
-  //     .object({
-  //       showNotes: z.boolean().optional(),
-  //       notes: z.string().optional(),
-  //     })
-  //     .parse(search),
   loader: (opts) =>
     opts.context.queryClient.ensureQueryData(
       productQueryOptions(opts.params.productId)

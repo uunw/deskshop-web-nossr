@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import axios from "axios";
 import { useAtom } from "jotai";
 import logLevel from "loglevel";
@@ -29,35 +29,14 @@ import { isNProgressIsAnimatingAtom } from "@/libs/jotai";
 import { useCreateProductMutation } from "@/libs/queryOptions";
 import { AddProductFormType, addProductSchema } from "@/types/product.type";
 
-// export const Route = new FileRoute('/manage/product/add_desk').createRoute({
-//   component: ManageProductAddDeskComponent,
-// });
+export const Route = createFileRoute('/manage/product/add_desk')({
+  component: ManageProductAddDeskComponent
+})
 
-export const component = function ManageProductAddDeskComponent() {
+function ManageProductAddDeskComponent() {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // const addProductMutation = useMutation({
-  //   mutationKey: ["add_product"],
-  //   mutationFn: async (data: AddProductFormType) => {
-  //     const formData = new FormData();
-
-  //     formData.set("add_desk", data.add_desk);
-  //     if (data.add_picture) {
-  //       formData.set("add_picture", data.add_picture);
-  //     }
-  //     formData.set("add_detail", data.add_detail);
-  //     formData.set("add_color", data.add_color);
-  //     formData.set("add_price", currency(data.add_price).toString());
-
-  //     const res = await axios.post(
-  //       "https://waraporn.cmtc.ac.th/student/student65/u65301280011/IKEA-DeskShop/api/add_product.php",
-  //       formData
-  //     );
-
-  //     return res.data;
-  //   },
-  // });
   const createProductMutation = useCreateProductMutation();
 
   const [isNProgressIsAnimating, setIsNProgressIsAnimating] = useAtom(
@@ -232,4 +211,4 @@ export const component = function ManageProductAddDeskComponent() {
       </Card>
     </>
   );
-};
+}

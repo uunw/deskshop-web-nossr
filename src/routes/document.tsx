@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { createFileRoute,Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
@@ -41,7 +41,11 @@ const documents: Document[] = [
   },
 ];
 
-export const component = function DocumentComponent() {
+export const Route = createFileRoute('/document')({
+  component: DocumentComponent
+})
+
+function DocumentComponent() {
   const { t } = useTranslation();
 
   return (
@@ -99,4 +103,4 @@ export const component = function DocumentComponent() {
       </div> */}
     </motion.div>
   );
-};
+}

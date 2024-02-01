@@ -1,9 +1,9 @@
-import { FileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 
-export const Route = new FileRoute('/manage/').createRoute({
-  component: ManageIndexComponent,
-});
+export const Route = createFileRoute('/manage/')({
+  component: ManageIndexComponent
+})
 
 function ManageIndexComponent() {
   return (

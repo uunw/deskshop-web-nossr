@@ -1,7 +1,7 @@
 // import { useAuth, useSignUp } from "@clerk/clerk-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import axios, { AxiosError } from "axios";
 import { motion } from "framer-motion";
 import logLevel from "loglevel";
@@ -83,11 +83,11 @@ const signUpSchema = z
 
 type SignUpType = z.infer<typeof signUpSchema>;
 
-// export const Route = new FileRoute('/auth/register').createRoute().update({
-//   component: AuthRegisterComponent,
-// });
+export const Route = createFileRoute('/auth/register')({
+  component: AuthRegisterComponent
+})
 
-export const component = function AuthRegisterComponent() {
+function AuthRegisterComponent() {
   const [isFormLoading, setIsFormLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -416,4 +416,4 @@ export const component = function AuthRegisterComponent() {
       </div>
     </motion.div>
   );
-};
+}

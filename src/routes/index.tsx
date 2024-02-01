@@ -1,12 +1,12 @@
-import { FileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 
-export const Route = new FileRoute('/').createRoute({
-  component: IndexComponent,
-});
+export const Route = createFileRoute('/')({
+  component: IndexComponent
+})
 
 function IndexComponent() {
   const { t } = useTranslation();

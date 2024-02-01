@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { FileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import axios from "axios";
 import currency from "currency.js";
 import { motion } from "framer-motion";
@@ -70,9 +70,9 @@ import {
 } from "@/libs/queryOptions";
 import { ProductType } from "@/types/product.type";
 
-export const Route = new FileRoute('/manage/product/scheduling_desk').createRoute({
-  component: ManageProductSchedulingDeskComponent,
-});
+export const Route = createFileRoute('/manage/product/scheduling_desk')({
+  component: ManageProductSchedulingDeskComponent
+})
 
 function ManageProductSchedulingDeskComponent() {
   const productQuery = useSuspenseQuery(productsQueryOptions());
